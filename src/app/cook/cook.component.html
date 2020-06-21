@@ -1,0 +1,5 @@
+<h3>Cook Component</h3>
+<p *ngIf="gameState | async; else gameOff">Game is running...</p>
+<ng-template #gameOff>
+    <p>Game is stopped.</p>
+</ng-template>

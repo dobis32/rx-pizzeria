@@ -1,0 +1,37 @@
+<h3>Prep Component</h3>
+<p *ngIf="gameState | async; else gameOff">Game is running...</p>
+<ng-template #gameOff>
+    <p>Game is stopped.</p>
+</ng-template>
+<div id="dough-controls">
+    <form *ngIf="!activePizza" [formGroup]="doughSizeForm" (ngSubmit)="makeDough(doughSizeForm)">
+        <div>
+            <input id="small-size" type="radio" name="size" value="small" formControlName="size"><label for="small-size">Small</label>
+            <input id="medium-size" type="radio" name="size" value="medium" formControlName="size"><label for="medium-size">Medium</label>
+            <input id="large-size" type="radio" name="size" value="large" formControlName="size"><label for="large-size">Large</label>
+        </div>
+        <div>
+            <button [disabled]="makingDough">Make dough</button>
+            <app-progress-bar *ngIf="makingDough" (finished)="doughCreated()" [maxProgress]="100" [speed]="30"></app-progress-bar>
+        </div>
+    </form>
+    <div *ngIf="activePizza">
+        <button *ngIf="!hasSauce" [disabled]="addingSauce" (click)="addSauce()">Add sauce</button>
+        <app-progress-bar *ngIf="addingSauce" (finished)="sauceAdded()" [maxProgress]="100" [speed]="30"></app-progress-bar>
+    </div>
+    <div *ngIf="hasSauce">
+        <button *ngIf="!hasCheese" [disabled]="addingCheese" (click)="addCheese()">Add cheese</button>
+        <app-progress-bar *ngIf="addingCheese" (finished)="cheeseAdded()" [maxProgress]="100" [speed]="60"></app-progress-bar>
+    </div>
+    
+</div>
+<div *ngIf="activePizza">
+    <h2>Active pizza:</h2>
+    <ul>
+        <li>Size:{{activePizza}}</li>
+        <li *ngIf="hasSauce">Sauce added</li>
+        <li *ngIf="hasCheese">Cheese added</li>
+    </ul>
+    <button (click)="scrap()">Scrap</button>
+    <button (click)="sendToCook()">Send to cook</button>
+</div>
