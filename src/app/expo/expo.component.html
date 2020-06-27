@@ -1,0 +1,13 @@
+<h3>Expo Component</h3>
+<p *ngIf="gameState | async; else gameOff">Game is running...</p>
+<ng-template #gameOff>
+    <p>Game is stopped.</p>
+</ng-template>
+<div>
+    <button [disabled]="foldingBox" (click)="foldBox()">Fold box</button>
+    <app-progress-bar *ngIf="foldingBox" (finished)="boxFolded()" [maxProgress]="100" [speed]="180"></app-progress-bar>
+    <h5>Boxes ready: {{boxesReady}}</h5>
+    <ul>
+        <app-cooked-pizza *ngFor="let pizza of cookedPizzas" [boxReady]="boxesReady > 0 ? true : false" [pizza]="pizza" (takeBox)="giveBox()"></app-cooked-pizza>
+    </ul>
+</div>

@@ -1,5 +1,6 @@
-<h1>Hello world</h1>
+<h1>Rx Pizzeria</h1>
 <button (click)="gameRun()">Run game</button>
 <button (click)="gameStop()">Stop game</button>
-<app-prep [gameState]="gameState.gameStateSubject"></app-prep>
-<app-cook [gameState]="gameState.gameStateSubject"></app-cook>
+<app-prep [gameState]="gameState.gameStateSubject" (preppedPizzaReady)="preppedPizzaReady($event)"></app-prep>
+<app-cook [preppedPizzas]="preppedPizzas" [gameState]="gameState.gameStateSubject" (pizzaToExpo)="pizzaToExpo($event)"></app-cook>
+<app-expo [gameState]="gameState.gameStateSubject" [cookedPizzas]="cookedPizzas"></app-expo>

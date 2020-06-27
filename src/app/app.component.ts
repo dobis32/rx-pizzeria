@@ -9,6 +9,9 @@ import { OrdersService } from './services/orders.service';
 })
 export class AppComponent {
 	title = 'rx-pizzeria';
+	public preppedPizzas: Array<any> = new Array<any>();
+	public cookedPizzas: Array<any> = new Array<any>();
+
 	constructor(public gameState: GameStateService, public orders: OrdersService) {}
 
 	public gameRun() {
@@ -17,5 +20,18 @@ export class AppComponent {
 
 	public gameStop() {
 		this.gameState.stop();
+	}
+
+	public preppedPizzaReady(preppedPizza: any) {
+		let clone: any = {};
+		Object.assign(clone, preppedPizza);
+		clone.uncooked = true;
+		this.preppedPizzas.push(clone);
+	}
+
+	public pizzaToExpo(cookedPizza: any) {
+		this.preppedPizzas = this.preppedPizzas.filter((pizza) => pizza != cookedPizza);
+		this.cookedPizzas.push(cookedPizza);
+		console.log(this.cookedPizzas);
 	}
 }

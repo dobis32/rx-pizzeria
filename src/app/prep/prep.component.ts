@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 })
 export class PrepComponent implements OnInit {
 	@Input() public gameState: Observable<boolean>;
+	@Output() public preppedPizzaReady: EventEmitter<any> = new EventEmitter<any>();
 	public makingDough: boolean;
 	public doughSizeForm: FormGroup;
 	public activePizza: string;
@@ -30,10 +31,9 @@ export class PrepComponent implements OnInit {
 	ngOnInit(): void {}
 
 	makeDough(fg: FormGroup) {
-		console.log(fg.value);
 		if (fg.valid) {
-			console.log(fg.value.size);
 			this.makingDough = true;
+			fg.controls['size'].disable();
 		} else {
 			console.log('select dough size');
 		}
@@ -42,6 +42,8 @@ export class PrepComponent implements OnInit {
 	doughCreated() {
 		this.activePizza = this.doughSizeForm.value.size;
 		this.makingDough = false;
+		this.doughSizeForm.controls['size'].enable();
+
 		this.doughSizeForm.reset();
 	}
 
@@ -64,8 +66,10 @@ export class PrepComponent implements OnInit {
 	}
 
 	sendToCook() {
+		this.preppedPizzaReady.emit({ size: this.activePizza, cheese: this.hasCheese, sauce: this.hasSauce });
 		this.activePizza = '';
-		// emit pizza to cook
+		this.hasSauce = false;
+		this.hasCheese = false;
 	}
 
 	scrap() {

@@ -1,0 +1,7 @@
+<div>
+    <p>Size: {{pizza.size}} {{cut ? '| cut' : ''}} {{boxed ? '| boxed' : ''}}</p>
+    <button *ngIf="!cut" [disabled]="cuttingPizza" (click)="cutPizza()">Cut</button>
+    <app-progress-bar *ngIf="cuttingPizza" (finished)="doneCutting()" [maxProgress]="100" [speed]="60"></app-progress-bar>
+    <button *ngIf="!boxed && cut && boxReady" [disabled]="boxingPizza" (click)="boxPizza()">Box</button>
+    <app-progress-bar *ngIf="boxingPizza" (finished)="doneBoxing()" [maxProgress]="100" [speed]="60"></app-progress-bar>
+</div>

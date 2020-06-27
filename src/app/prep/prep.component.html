@@ -11,7 +11,7 @@
             <input id="large-size" type="radio" name="size" value="large" formControlName="size"><label for="large-size">Large</label>
         </div>
         <div>
-            <button [disabled]="makingDough">Make dough</button>
+            <button [disabled]="makingDough || !doughSizeForm.valid">Make dough</button>
             <app-progress-bar *ngIf="makingDough" (finished)="doughCreated()" [maxProgress]="100" [speed]="30"></app-progress-bar>
         </div>
     </form>
@@ -23,15 +23,20 @@
         <button *ngIf="!hasCheese" [disabled]="addingCheese" (click)="addCheese()">Add cheese</button>
         <app-progress-bar *ngIf="addingCheese" (finished)="cheeseAdded()" [maxProgress]="100" [speed]="60"></app-progress-bar>
     </div>
-    
 </div>
 <div *ngIf="activePizza">
     <h2>Active pizza:</h2>
     <ul>
-        <li>Size:{{activePizza}}</li>
+        <li *ngIf="activePizza; then activePizzaBlock; else noneBlock"></li>
+        <ng-template #activePizzaBlock>
+            <li>Size:{{activePizza}}</li>
+        </ng-template>
+        <ng-template #noneBlock>
+            <li>None</li>
+        </ng-template>
         <li *ngIf="hasSauce">Sauce added</li>
         <li *ngIf="hasCheese">Cheese added</li>
     </ul>
     <button (click)="scrap()">Scrap</button>
-    <button (click)="sendToCook()">Send to cook</button>
+    <button [disabled]="!hasCheese" (click)="sendToCook()">Send to cook</button>
 </div>

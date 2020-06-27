@@ -3,3 +3,10 @@
 <ng-template #gameOff>
     <p>Game is stopped.</p>
 </ng-template>
+<div id="prepped-pizzas">
+    <div class="prepped-pizza" *ngFor="let preppedPizza of preppedPizzas; let i = index">
+        <p>Size: {{preppedPizza.size}} | Sauce: {{preppedPizza.sauce}} | Cheese: {{preppedPizza.cheese}}</p>
+        <app-progress-bar (finished)="pizzaCooked(preppedPizza)" [maxProgress]="100" [speed]="60"></app-progress-bar>
+        <button [disabled]="preppedPizza.uncooked" (click)="sendToExpo(preppedPizza)">Send to expo</button>
+    </div>
+</div>
